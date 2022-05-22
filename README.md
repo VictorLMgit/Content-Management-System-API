@@ -1,5 +1,4 @@
-# REST API Posts Manager
-# REST API
+# REST API Content Management System 
 
 The Rest API to control CRUD flow in a post storage system.
 
