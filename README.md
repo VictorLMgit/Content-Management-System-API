@@ -1,62 +1,160 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# REST API Posts Manager
+# REST API
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+The Rest API to control CRUD flow in a post storage system.
 
-## About Laravel
+## Get list of posts
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### Request
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+`GET /posts/`
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+    curl -i -H 'www-x-form-urlencoded' http://localhost:8000/posts/
 
-## Learning Laravel
+### Response
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+    HTTP/1.1 200 OK
+    Date: Sun, 21 May 2022 12:36:30 GMT
+    Status: 200 OK
+    Connection: close
+    Content-Type: application/json
+    Content-Length: int
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+    []
+    
+## Create a new Post
 
-## Laravel Sponsors
+### Request
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+`POST /posts/`
 
-### Premium Partners
+    curl -i -H 'www-x-form-urlencoded' http://localhost:8000/posts
+    body:
+    ?title="Dracula"&author="Bram%Stoker"&content="post-content"&tags="["Horror%Gótico","Romance%epistolar"]"
+    *Required: title, author.
+    
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/)**
-- **[OP.GG](https://op.gg)**
+### Response
 
-## Contributing
+    HTTP/1.1 201 Created
+    Date: Sun, 21 May 2022 12:36:30 GMT
+    Status: 201 Created
+    Connection: close
+    Content-Type: application/json
+    Content-Length: int
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+    {
+    "title": "Dracula",
+    "author": "Bram Stoker",
+    "content": "No século 15, a Igreja se recusa a enterrar em solo sagrado a grande paixão do líder dos Cárpatos que decide, então, renegar a instituição          religiosa. Ele passa a perambular através dos séculos até encontrar a suposta reencarnação de sua amada.",
+    "tags": "[\"Horror Gótico\", \"Romance epistolar\"]",
+    "id": 1
+    }
+    
+    
+## Get list of posts again
 
-## Code of Conduct
+### Request
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+`GET /posts/`
 
-## Security Vulnerabilities
+    curl -i -H 'www-x-form-urlencoded' http://localhost:8000/posts/
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### Response
 
-## License
+    HTTP/1.1 200 OK
+    Date: Sun, 21 May 2022 12:36:30 GMT
+    Status: 200 OK
+    Connection: close
+    Content-Type: application/json
+    Content-Length: int
+    
+    [
+    {
+    "id": 1,
+    "title": "Dracula",
+    "author": "Bram Stoker",
+    "content": "No século 15, a Igreja se recusa a enterrar em solo sagrado a grande paixão do líder dos Cárpatos que decide, então, renegar a instituição          religiosa. Ele passa a perambular através dos séculos até encontrar a suposta reencarnação de sua amada.",
+    "tags": "[\"Horror Gótico\", \"Romance epistolar\"]"
+    }
+    ]
+    
+## Create a duplicate title post
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### Request
+
+`POST /posts/`
+
+    curl -i -H 'www-x-form-urlencoded' http://localhost:8000/posts
+    body:
+    ?title="Dracula"&author="Bram%Stoker"&content="post-content"&tags="["Horror%Gótico","Romance%epistolar"]"
+    *Required: title, author.
+    
+
+### Response
+
+    HTTP/1.1 422 error
+    Date: Sun, 21 May 2022 12:36:30 GMT
+    Status: 422 The given data was invalid.
+    Connection: close
+    Content-Type: application/json
+    Content-Length: int
+
+    {
+    "message": "The given data was invalid.",
+    "errors": {
+        "title": [
+            "The title has already been taken."
+        ]
+    }
+    }
+    
+    
+## Update a post
+
+### Request
+
+`PUT /posts/:id`
+
+    curl -i -H 'www-x-form-urlencoded' -X PUT http://localhost:8000/posts/1
+    body:
+    ?title='Drácula'
+### Response
+
+    HTTP/1.1 200 OK
+    Date: Thu, 24 Feb 2011 12:36:31 GMT
+    Status: 200 OK
+    Connection: close
+    Content-Type: application/json
+    Content-Length: 40
+
+    {
+    "title": "Drácula",
+    "author": "Bram Stoker",
+    "content": "No século 15, a Igreja se recusa a enterrar em solo sagrado a grande paixão do líder dos Cárpatos que decide, então, renegar a instituição          religiosa. Ele passa a perambular através dos séculos até encontrar a suposta reencarnação de sua amada.",
+    "tags": "[\"Horror Gótico\", \"Romance epistolar\"]",
+    "id": 1
+    }
+    
+## Update a non existing post
+### Request
+
+`PUT /posts/:id`
+
+    curl -i -H 'www-x-form-urlencoded' -X PUT http://localhost:8000/posts/100
+    body:
+    ?title='Drácula'
+    
+### Response
+
+    HTTP/1.1 404 error
+    Date: Thu, 24 Feb 2011 12:36:31 GMT
+    Status: 404 Route not found.
+    Connection: close
+    Content-Type: application/json
+    Content-Length: int
+    
+    {
+    "error:": "Route not found. Update failed"
+    }
+    

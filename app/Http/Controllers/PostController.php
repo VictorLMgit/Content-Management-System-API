@@ -33,6 +33,7 @@ class PostController extends Controller
 
         $request->validate($this->post->rules());
         $new_post = $this->post->create($request->all());
+        $new_post = $this->post->select('title', 'author', 'content', 'tags','id')->where('id','=',$new_post->id)->get();
         return response()->json($new_post,201);
     }
 
