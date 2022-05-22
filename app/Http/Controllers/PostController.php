@@ -35,6 +35,7 @@ class PostController extends Controller
         $new_post = $this->post->create($request->all());
         $new_post = $this->post->select('title', 'author', 'content', 'tags','id')->where('id','=',$new_post->id)->get();
         return response()->json($new_post,201);
+        // dd($request->all());
     }
 
     // Recebe um inteiro id e pesquiso ele entre meus itens armazenados
@@ -45,6 +46,7 @@ class PostController extends Controller
         {
             return response()->json(['error:'=>'Route not found'],404);
         }
+        $post = $this->post->select('id','title', 'author', 'content', 'tags')->where('id','=',$id)->get();
         return $post;
     }
    

@@ -18,8 +18,8 @@ class CreatePostsTable extends Migration
             $table->id();
             $table->string('title', 60);
             $table->string('author', 30);
-            $table->text('content');
-            $table->json('tags');
+            $table->text('content')->default(null);
+            $table->json('tags')->default(null);
             $table->timestamps();
         });
     }

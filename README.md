@@ -9,7 +9,7 @@ The Rest API to control CRUD flow in a post storage system.
 
 `GET /posts/`
 
-    curl -i -H 'www-x-form-urlencoded' http://localhost:8000/posts/
+    curl -i -H http://localhost:8000/posts/
 
 ### Response
 
@@ -28,10 +28,13 @@ The Rest API to control CRUD flow in a post storage system.
 
 `POST /posts/`
 
-    curl -i -H 'www-x-form-urlencoded' http://localhost:8000/posts
-    body:
-    ?title="Dracula"&author="Bram%Stoker"&content="post-content"&tags="["Horror%Gótico","Romance%epistolar"]"
-    *Required: title, author.
+    curl -i -H 'application/json' http://localhost:8000/posts
+    {
+    "title": "Dracula",
+    "author": "Bram Stoker",
+    "content": "No século 15, a Igreja se recusa a enterrar em solo sagrado a grande paixão do líder dos Cárpatos que decide, então, renegar a instituição              religiosa. Ele passa a perambular através dos séculos até encontrar a suposta reencarnação de sua amada.",
+    "tags":["Horror Gótico", "Romance epistolar"]
+    }
     
 
 ### Response
@@ -43,13 +46,18 @@ The Rest API to control CRUD flow in a post storage system.
     Content-Type: application/json
     Content-Length: int
 
+    [
     {
-    "title": "Dracula",
-    "author": "Bram Stoker",
-    "content": "No século 15, a Igreja se recusa a enterrar em solo sagrado a grande paixão do líder dos Cárpatos que decide, então, renegar a instituição          religiosa. Ele passa a perambular através dos séculos até encontrar a suposta reencarnação de sua amada.",
-    "tags": "[\"Horror Gótico\", \"Romance epistolar\"]",
-    "id": 1
+        "title": "Dracula",
+        "author": "Bram Stoker",
+        "content": "No século 15, a Igreja se recusa a enterrar em solo sagrado a grande paixão do líder dos Cárpatos que decide, então, renegar a instituição              religiosa. Ele passa a perambular através dos séculos até encontrar a suposta reencarnação de sua amada.",
+        "tags": [
+            "Horror Gótico",
+            "Romance epistolar"
+        ],
+        "id": 1
     }
+    ]
     
     
 ## Get list of posts again
@@ -58,7 +66,7 @@ The Rest API to control CRUD flow in a post storage system.
 
 `GET /posts/`
 
-    curl -i -H 'www-x-form-urlencoded' http://localhost:8000/posts/
+    curl -i -H 'application/json' http://localhost:8000/posts/
 
 ### Response
 
@@ -71,24 +79,121 @@ The Rest API to control CRUD flow in a post storage system.
     
     [
     {
-    "id": 1,
-    "title": "Dracula",
-    "author": "Bram Stoker",
-    "content": "No século 15, a Igreja se recusa a enterrar em solo sagrado a grande paixão do líder dos Cárpatos que decide, então, renegar a instituição          religiosa. Ele passa a perambular através dos séculos até encontrar a suposta reencarnação de sua amada.",
-    "tags": "[\"Horror Gótico\", \"Romance epistolar\"]"
+        "id": 19,
+        "title": "Dracula",
+        "author": "Bram Stoker",
+        "content": "No século 15, a Igreja se recusa a enterrar em solo sagrado a grande paixão do líder dos Cárpatos que decide, então, renegar a instituição             religiosa. Ele passa a perambular através dos séculos até encontrar a suposta reencarnação de sua amada.",
+        "tags": [
+            "Horror Gótico",
+            "Romance epistolar"
+        ]
     }
     ]
+
+## Get a specific Post
+
+### Request
+
+`GET /posts/{id}`
+
+    curl -i -H 'Accept: application/json' http://localhost:8000/posts/1
     
+
+### Response
+
+    HTTP/1.1 200 OK
+    Date: Sun, 21 May 2022 12:36:30 GMT
+    Status: 200 OK
+    Connection: close
+    Content-Type: application/json
+    Content-Length: int
+
+    [
+    {
+        "id": 1,
+        "title": "Dracula",
+        "author": "Bram Stoker",
+        "content": "No século 15, a Igreja se recusa a enterrar em solo sagrado a grande paixão do líder dos Cárpatos que decide, então, renegar a instituição              religiosa. Ele passa a perambular através dos séculos até encontrar a suposta reencarnação de sua amada.",
+        "tags": [
+            "Horror Gótico",
+            "Romance epistolar"
+        ]
+    }
+    ]
+
+## Get a non-existent Post
+
+### Request
+
+`GET /posts/{id}`
+
+    curl -i -H 'Accept: application/json' http://localhost:8000/posts/25
+
+### Response
+
+    HTTP/1.1 404 Not Found
+    Date: Sun, 21 May 2022 12:36:30 GMT
+    Status: 404 Not Found
+    Connection: close
+    Content-Type: application/json
+    Content-Length: int
+
+    {
+    "error:": "Route not found"
+    }
+
+
+## Get Posts by tag 
+
+### Request
+
+`GET /posts?tag=Horror`
+
+    curl -i -H 'Accept: application/json' http://localhost:8000/posts?tag=Horror
+    
+    lists all posts with 'Horror' in "tags" array.
+
+### Response
+
+    HTTP/1.1 200 OK
+    Date: Sun, 21 May 2022 12:36:30 GMT
+    Status: 200 OK
+    Connection: close
+    Content-Type: application/json
+    Content-Length: int
+
+    [
+    {
+        "id": 1,
+        "title": "Dracula",
+        "author": "Bram Stoker",
+        "content": "No século 15, a Igreja se recusa a enterrar em solo sagrado a grande paixão do líder dos Cárpatos que decide, então, renegar a instituição              religiosa. Ele passa a perambular através dos séculos até encontrar a suposta reencarnação de sua amada.",
+        "tags": [
+            "Horror Gótico",
+            "Romance epistolar"
+        ]
+    }
+    ]
+
 ## Create a duplicate title post
 
 ### Request
 
 `POST /posts/`
 
-    curl -i -H 'www-x-form-urlencoded' http://localhost:8000/posts
-    body:
-    ?title="Dracula"&author="Bram%Stoker"&content="post-content"&tags="["Horror%Gótico","Romance%epistolar"]"
-    *Required: title, author.
+    curl -i -H 'application/json' http://localhost:8000/posts
+    [
+    {
+        "title": "Dracula",
+        "author": "Bram Stoker",
+        "content": "No século 15, a Igreja se recusa a enterrar em solo sagrado a grande paixão do líder dos Cárpatos que decide, então, renegar a instituição              religiosa. Ele passa a perambular através dos séculos até encontrar a suposta reencarnação de sua amada.",
+        "tags": [
+            "Horror Gótico",
+            "Romance epistolar"
+        ],
+        "id": 1
+    }
+    ]
     
 
 ### Response
@@ -110,45 +215,55 @@ The Rest API to control CRUD flow in a post storage system.
     }
     
     
-## Update a post
+## Update a existing post
 
 ### Request
 
-`PUT /posts/:id`
+`PUT /posts/{id}`
 
-    curl -i -H 'www-x-form-urlencoded' -X PUT http://localhost:8000/posts/1
-    body:
-    ?title='Drácula'
+    curl -i -H 'application/json' -X PUT http://localhost:8000/posts/1
+    
+    {
+    "title": "Drácula"
+    }
+    
 ### Response
 
     HTTP/1.1 200 OK
-    Date: Thu, 24 Feb 2011 12:36:31 GMT
+    Date: Sun, 21 May 2022 12:36:30 GMT
     Status: 200 OK
     Connection: close
     Content-Type: application/json
-    Content-Length: 40
+    Content-Length: int
 
+    [
     {
-    "title": "Drácula",
-    "author": "Bram Stoker",
-    "content": "No século 15, a Igreja se recusa a enterrar em solo sagrado a grande paixão do líder dos Cárpatos que decide, então, renegar a instituição          religiosa. Ele passa a perambular através dos séculos até encontrar a suposta reencarnação de sua amada.",
-    "tags": "[\"Horror Gótico\", \"Romance epistolar\"]",
-    "id": 1
+        "title": "Drácula",
+        "author": "Bram Stoker",
+        "content": "No século 15, a Igreja se recusa a enterrar em solo sagrado a grande paixão do líder dos Cárpatos que decide, então, renegar a instituição              religiosa. Ele passa a perambular através dos séculos até encontrar a suposta reencarnação de sua amada.",
+        "tags": [
+            "Horror Gótico",
+            "Romance epistolar"
+        ],
+        "id": 19
     }
+    ]
     
 ## Update a non existing post
 ### Request
 
-`PUT /posts/:id`
+`PUT /posts/{id}`
 
-    curl -i -H 'www-x-form-urlencoded' -X PUT http://localhost:8000/posts/100
-    body:
-    ?title='Drácula'
+    curl -i -H 'application/json' -X PUT http://localhost:8000/posts/25
+    
+    {
+    "title": "Drácula"
+    }
     
 ### Response
 
     HTTP/1.1 404 error
-    Date: Thu, 24 Feb 2011 12:36:31 GMT
+    Date: Sun, 21 May 2022 12:36:30 GMT
     Status: 404 Route not found.
     Connection: close
     Content-Type: application/json
@@ -158,3 +273,43 @@ The Rest API to control CRUD flow in a post storage system.
     "error:": "Route not found. Update failed"
     }
     
+## Delete a existing Post
+
+### Request
+
+`DELETE /thing/{id}`
+
+    curl -i -H 'Accept: application/json' -X DELETE http://localhost:8000/posts/1/
+
+### Response
+
+    HTTP/1.1 200 OK
+    Date: Sun, 21 May 2022 12:36:30 GMT
+    Status: 200 OK
+    Content-Type: application/json
+    Connection: close
+    
+    {
+    "msg:": "The post has been deleted succefully"
+    }
+
+## Try to delete same Thing again
+
+### Request
+
+`DELETE /posts/{id}`
+
+    curl -i -H 'Accept: application/json' -X DELETE http://localhost:8000/posts/1/
+
+### Response
+
+    HTTP/1.1 404 Not Found
+    Date: Sun, 21 May 2022 12:36:30 GMT
+    Status: 404 Not Found
+    Connection: close
+    Content-Type: application/json
+    Content-Length: int
+
+    {
+    "error:": "Route not found. Delete failed"
+    }
