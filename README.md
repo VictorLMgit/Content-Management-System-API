@@ -182,7 +182,7 @@ The Rest API to control CRUD flow in a post storage system.
 `POST /posts/`
 
     curl -i -H 'application/json' http://localhost:8000/posts
-    [
+   
     {
         "title": "Dracula",
         "author": "Bram Stoker",
@@ -193,7 +193,7 @@ The Rest API to control CRUD flow in a post storage system.
         ],
         "id": 1
     }
-    ]
+    
     
 
 ### Response
@@ -277,7 +277,7 @@ The Rest API to control CRUD flow in a post storage system.
 
 ### Request
 
-`DELETE /thing/{id}`
+`DELETE /posts/{id}`
 
     curl -i -H 'Accept: application/json' -X DELETE http://localhost:8000/posts/1/
 
