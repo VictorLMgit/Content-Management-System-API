@@ -7,10 +7,14 @@ use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
+    // O método construror injeta uma instância do Model para usa-lo como um objeto de forma mais maleável.
     public function __construct(Post $post){
         $this->post = $post;
     }
 
+    /* O método index serve simplesmente para retornar ao usuário todas as postagens registradas no DB.
+    Se houver na requisição um parâmetro 'tag' como ?tag=valor, a função irá retornar todas as postagem 
+    que contiverem este valor em seu array de Tags. */
     public function index(Request $request)
     {   
     
@@ -28,6 +32,10 @@ class PostController extends Controller
         }
     }
     
+
+    /* O método store checa se a requisição enviada pelo cliente é válida, ou seja, se possui
+    o campo 'title' e se esse campo não é repetido. Se a checagem for validada, o método armazena
+    o registro no DB, senão, é retornado um erro para o cliente */
     public function store(Request $request)
     {
 
@@ -38,7 +46,9 @@ class PostController extends Controller
         // dd($request->all());
     }
 
-    // Recebe um inteiro id e pesquiso ele entre meus itens armazenados
+    /* O método show apenas retorna para o cliente uma postagem especificada pelo id,
+    caso o id não esteja registrado no banco de dados, é retornado um json informando que a rota 
+    não foi encontrada */
     public function show($id)
     {
         $post = $this->post->find($id);
@@ -50,6 +60,8 @@ class PostController extends Controller
         return $post;
     }
    
+    /* O método update identifica um registro no BD através do id e o atualiza no BD a partir do que foi
+    enviado na requisição pelo cliente, caso essa requisição seja validada */
     public function update(Request $request, $id)
     {
         $post = $this->post->find($id);
@@ -58,7 +70,7 @@ class PostController extends Controller
             return response()->json(['error:'=>'Route not found. Update failed'],404);
         }
 
-        // Regras parciais para filtrar os campos que serão editados.
+        // Regras parciais de validação para filtrar a validação apenas para os campos que serão editados.
         $partial_rules = array();
 
         foreach($this->post->rules($id) as $input => $rule)
@@ -75,6 +87,9 @@ class PostController extends Controller
         return response()->json($post,200);
     }
 
+    /* O método destroy deleta uma postagem especificada pelo id.
+    caso o id não esteja registrado no banco de dados, é retornado um json informando que a rota 
+    não foi encontrada */
     public function destroy($id)
     {
         $post = $this->post->find($id);
