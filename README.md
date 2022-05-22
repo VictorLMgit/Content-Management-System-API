@@ -277,7 +277,7 @@ The Rest API to control CRUD flow in a post storage system.
 
 ### Request
 
-`DELETE /thing/{id}`
+`DELETE /posts/{id}`
 
     curl -i -H 'Accept: application/json' -X DELETE http://localhost:8000/posts/1/
 
@@ -293,7 +293,7 @@ The Rest API to control CRUD flow in a post storage system.
     "msg:": "The post has been deleted succefully"
     }
 
-## Try to delete same Thing again
+## Try to delete same Post again
 
 ### Request
 
